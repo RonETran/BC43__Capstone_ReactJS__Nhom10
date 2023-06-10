@@ -1,17 +1,37 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { USER_LOGIN, clearStorage } from '../../Util/config';
 
-export const Header = (props) => {
+const Header = (props) => {
+    const navigate = useNavigate();
+    let {number} = props;
+    const {userLogin} = useSelector(state => state.userReducer);
+    const renderLoginLink = () => {
+        if(userLogin.email !== '') {
+            return <>
+                <i className="fa fa-user icon-orange px-2"></i>
+                <NavLink to="/profile" className="text-dark text-hover px-2">{userLogin.email}</NavLink>
+                <span style={{cursor:'pointer'}} className='text-dark bd-text text-hover px-2' onClick={()=>{
+                    clearStorage(USER_LOGIN);
+                    navigate('/login');
+                    window.location.reload();
+                }}>Logout</span>
+            </>
+        }
+        return <>
+            <i className="fa fa-user icon-orange px-2"></i>
+            <NavLink to="/login" className="text-dark text-hover px-2">Login</NavLink>
+            <NavLink to="/register" className="text-dark bd-text text-hover px-2">Register</NavLink>
+        </>
+    }
   return (
     <div className='header'>
         <div className='header-top bg-header-top'>
             <div className='container d-flex px-0 py-2 justify-content-between align-items-center'>
                 <p className='m-0'>World Wide Completely Free Returns and Free Shipping</p>
                 <div className='account'>
-                    <i className="fa fa-user icon-orange px-2"></i>
-                    <NavLink to="/login" className="text-dark text-hover px-2">Login</NavLink>
-                    <NavLink to="/register" className="text-dark bd-text text-hover px-2">Register</NavLink>
+                    {renderLoginLink()}
                 </div>
             </div>
         </div>
@@ -25,7 +45,7 @@ export const Header = (props) => {
                     <NavLink to="/wishlist"><i className="fa fa-heart fs-icon px-2"></i></NavLink>
                     <div className='cart position-relative'>
                         <NavLink to="/cart"><i className="fa fa-shopping-cart fs-icon px-2"></i></NavLink>
-                        <span className='position-absolute count'>0</span>
+                        <span className='position-absolute count'>{number}</span>
                     </div>
                 </div>
             </div>
@@ -45,6 +65,4 @@ export const Header = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({})
-
-export default connect(mapStateToProps)(Header)
+export default Header

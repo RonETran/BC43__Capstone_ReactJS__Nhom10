@@ -1,8 +1,28 @@
+import { useFormik } from 'formik'
 import React from 'react'
-import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
+import { loginActionApi } from '../../Redux/reducers/userReducer'
+import { useDispatch } from 'react-redux'
 
-export const Login = (props) => {
+
+const Login = () => {
+  const dispatch = useDispatch();
+  const formLogin = useFormik({
+    initialValues:{
+      email:'',
+      password:''
+    },
+    validationSchema:yup.object().shape({
+      email:yup.string().required("Email cannot be blank!").email("Email is invalid!"),
+      password:yup.string().required("Password cannot be blank!").min(8,"Password must contain between 8 and 32 characters").max(32,"Password must contain between 8 and 32 characters").matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,"Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character"),
+    }),
+    onSubmit:(values) => {
+      const action = loginActionApi(values);
+      dispatch(action);
+    }
+  })
+
   return (
     <div>
       <div className='login-carousel bg-page'>
@@ -25,7 +45,7 @@ export const Login = (props) => {
           <div className='row'>
             <div className='col-12'>
               <div className='login-form'>
-                <form action="#">
+                <form action="#" onSubmit={formLogin.handleSubmit}>
                   <div className='row'>
                     <div className='col-12'>
                       <div className='form-group'>
@@ -33,7 +53,8 @@ export const Login = (props) => {
                           Email address 
                           <span className='required'> *</span>
                         </label>
-                        <input type="email" className='form-control' id='email'/>
+                        <input type="email" name='email' className='form-control' id='email' onInput={formLogin.handleChange} onBlur={formLogin.handleBlur}/>
+                        {formLogin.errors.email && <p className='text-danger mt-1'>{formLogin.errors.email}</p>}
                       </div>
                     </div>
                     <div className='col-12'>
@@ -42,12 +63,13 @@ export const Login = (props) => {
                           Password 
                           <span className='required'> *</span>
                         </label>
-                        <input type="password" className='form-control' id='password'/>
+                        <input type="password" name='password' className='form-control' id='password' onInput={formLogin.handleChange} onBlur={formLogin.handleBlur}/>
+                        {formLogin.errors.password && <p className='text-danger mt-1'>{formLogin.errors.password}</p>}
                       </div>
                     </div>
                     <div className='col-12'>
                       <div className='form-group'>
-                        <button className='btn-login'>Login</button>
+                        <button className='btn-login' type='submit'>Login</button>
                       </div>
                     </div>
                     <div className="col-12">
@@ -72,6 +94,4 @@ export const Login = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({})
-
-export default connect(mapStateToProps)(Login)
+export default Login

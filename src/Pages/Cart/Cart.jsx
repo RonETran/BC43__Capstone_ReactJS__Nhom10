@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import ProductCart from "../../Components/ProductCart/ProductCart";
 
 export const Cart = (props) => {
+
   return (
     <div>
       <div className="detail-carousel bg-page">
@@ -31,88 +33,18 @@ export const Cart = (props) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="product-remove ver-mid p-td">
-                  <i class="fa fa-trash-alt text-hover"></i>
-                </td>
-                <td className="product-img ver-mid">
-                  <img src="./img/image 5.png" className="w-80" alt="" />
-                </td>
-                <td className="product-name ver-mid p-td">
-                  <span className="text-hover fs-18">Adidas Prophere</span>
-                </td>
-                <td className="product-price ver-mid">
-                  <span>450$</span>
-                </td>
-                <td className="product-quantity ver-mid">
-                  <div className="prod-qty">
-                    <input type="text" value="1"/>
-                    <div className="dec qty-btn">-</div>
-                    <div className="inc qty-btn">+</div>
-                  </div>
-                </td>
-                <td className="product-total ver-mid">
-                  <span>450$</span>
-                </td>
-              </tr>
-              <tr>
-                <td className="product-remove ver-mid p-td">
-                  <i class="fa fa-trash-alt text-hover"></i>
-                </td>
-                <td className="product-img ver-mid">
-                  <img src="./img/image 5.png" className="w-80" alt="" />
-                </td>
-                <td className="product-name ver-mid p-td">
-                  <span className="text-hover fs-18">Adidas Prophere</span>
-                </td>
-                <td className="product-price ver-mid">
-                  <span>450$</span>
-                </td>
-                <td className="product-quantity ver-mid">
-                  <div className="prod-qty">
-                    <input type="text" value="1"/>
-                    <div className="dec qty-btn">-</div>
-                    <div className="inc qty-btn">+</div>
-                  </div>
-                </td>
-                <td className="product-total ver-mid">
-                  <span>450$</span>
-                </td>
-              </tr>
-              <tr>
-                <td className="product-remove ver-mid p-td">
-                  <i class="fa fa-trash-alt text-hover"></i>
-                </td>
-                <td className="product-img ver-mid">
-                  <img src="./img/image 5.png" className="w-80" alt="" />
-                </td>
-                <td className="product-name ver-mid p-td">
-                  <span className="text-hover fs-18">Adidas Prophere</span>
-                </td>
-                <td className="product-price ver-mid">
-                  <span>450$</span>
-                </td>
-                <td className="product-quantity ver-mid">
-                  <div className="prod-qty">
-                    <input type="text" value="1"/>
-                    <div className="dec qty-btn">-</div>
-                    <div className="inc qty-btn">+</div>
-                  </div>
-                </td>
-                <td className="product-total ver-mid">
-                  <span>450$</span>
-                </td>
-              </tr>
+              {props.cart.map((item)=>{
+                return <ProductCart itemCart={item}/>
+              })}
 
               <tr className="actions">
                 <td colSpan="6" className="border-0 p-act ver-mid">
                   <div className="d-flex justify-content-between">
                     <div className="act-left">
-                      <button className="continue btn-left">CONTINUE SHOPPING</button>
+                      <NavLink to="/home" className="continue btn-left">CONTINUE SHOPPING</NavLink>
                     </div>
                     <div className="act-right">
-                      <button className="clear-cart btn-right">CLEAR CART</button>
-                      <button className="update-cart btn-right">UPDATE CART</button>
+                      <button className="btn-right">SUBMIT ORDER</button>
                     </div>
                   </div>
                 </td>
@@ -125,6 +57,8 @@ export const Cart = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  cart: state.shopReducer.cart
+});
 
 export default connect(mapStateToProps)(Cart);

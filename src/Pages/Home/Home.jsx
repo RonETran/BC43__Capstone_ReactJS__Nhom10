@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+import axios from 'axios'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import Product from '../../Components/Product/Product'
 
 export const Home = (props) => {
+    
+  const [arrProduct, setArrayProduct] = useState(props.arrProduct);
+
+  const getAllProduct = async () => {
+    const result = await axios({
+      url: "https://shop.cyberlearn.vn/api/Product",
+      method: "GET",
+    });
+    setArrayProduct(result.data.content);
+  };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
   return (
     <div>
         <div className='home-carousel bg-carousel'>
@@ -22,77 +38,9 @@ export const Home = (props) => {
                     <p className='fs-18'>There are many variations of passages of Lorem Ipsum available</p>
                 </div>
                 <div className='product-item row'>
-                    <div className='item col-3 mb-5'>
-                        <div className='img mb-2 h-270 bg-product position-relative'>
-                            <img src="./img/image 5.png" alt="" className='position-img'/>
-                            <ul className='d-flex m-0 position-list'>
-                                <li className='px-3 py-2 bg-footer text-white bd-right li-icon'>ADD TO CART</li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><NavLink to="/detail" className="text-white"><i class="fa fa-eye"></i></NavLink></li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><i class="fa fa-heart"></i></li>
-                            </ul>
-                        </div>
-                        <div className='info'>
-                            <p className='m-0 fs-20'>Adidas</p>
-                            <p className='text-orange fs-20'>450$</p>
-                        </div>
-                    </div>
-                    <div className='item col-3 mb-5'>
-                        <div className='img mb-2 h-270 bg-product position-relative'>
-                            <img src="./img/image 5.png" alt="" className='position-img'/>
-                            <ul className='d-flex m-0 position-list'>
-                                <li className='px-3 py-2 bg-footer text-white bd-right li-icon'>ADD TO CART</li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><NavLink to="/detail" className="text-white"><i class="fa fa-eye"></i></NavLink></li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><i class="fa fa-heart"></i></li>
-                            </ul>
-                        </div>
-                        <div className='info'>
-                            <p className='m-0 fs-20'>Adidas</p>
-                            <p className='text-orange fs-20'>450$</p>
-                        </div>
-                    </div>
-                    <div className='item col-3 mb-5'>
-                        <div className='img mb-2 h-270 bg-product position-relative'>
-                            <img src="./img/image 5.png" alt="" className='position-img'/>
-                            <ul className='d-flex m-0 position-list'>
-                                <li className='px-3 py-2 bg-footer text-white bd-right li-icon'>ADD TO CART</li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><NavLink to="/detail" className="text-white"><i class="fa fa-eye"></i></NavLink></li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><i class="fa fa-heart"></i></li>
-                            </ul>
-                        </div>
-                        <div className='info'>
-                            <p className='m-0 fs-20'>Adidas</p>
-                            <p className='text-orange fs-20'>450$</p>
-                        </div>
-                    </div>
-                    <div className='item col-3 mb-5 '>
-                        <div className='img mb-2 h-270 bg-product position-relative'>
-                            <img src="./img/image 5.png" alt="" className='position-img'/>
-                            <ul className='d-flex m-0 position-list'>
-                                <li className='px-3 py-2 bg-footer text-white bd-right li-icon'>ADD TO CART</li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><NavLink to="/detail" className="text-white"><i class="fa fa-eye"></i></NavLink></li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><i class="fa fa-heart"></i></li>
-                            </ul>
-                        </div>
-                        <div className='info'>
-                            <p className='m-0 fs-20'>Adidas</p>
-                            <p className='text-orange fs-20'>450$</p>
-                        </div>
-                    </div>
-                    <div className='item col-3 mb-5'>
-                        <div className='img mb-2 h-270 bg-product position-relative'>
-                            <img src="./img/image 5.png" alt="" className='position-img'/>
-                            <ul className='d-flex m-0 position-list'>
-                                <li className='px-3 py-2 bg-footer text-white bd-right li-icon'>ADD TO CART</li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><NavLink to="/detail" className="text-white"><i class="fa fa-eye"></i></NavLink></li>
-                                <li className='p-li-icon bg-footer text-white bd-right li-icon'><i class="fa fa-heart"></i></li>
-                            </ul>
-                        </div>
-                        <div className='info'>
-                            <p className='m-0 fs-20'>Adidas</p>
-                            <p className='text-orange fs-20'>450$</p>
-                        </div>
-                    </div>
-              
+                    {arrProduct.map((item)=>{
+                        return <Product item={item}/>
+                    })}
                 </div>
             </div>
         </div>
@@ -100,6 +48,8 @@ export const Home = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+    arrProduct: state.shopReducer.arrProduct
+})
 
 export default connect(mapStateToProps)(Home)

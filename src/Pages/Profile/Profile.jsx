@@ -1,8 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { connect, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { getProfileActionApi } from "../../Redux/reducers/userReducer";
 
 export const Profile = (props) => {
+  const {userProfile} = props;
+  const dispatch = useDispatch();
+  
+  const getProfileApi = () => {
+    const action = getProfileActionApi();
+    dispatch(action);
+  } 
+
+  useEffect(()=>{
+    getProfileApi();
+  },[])
+
   return (
     <div>
       <div className="profile-carousel bg-page">
@@ -32,13 +45,26 @@ export const Profile = (props) => {
                       >
                         <button
                           className="nav-link active"
+                          id="dashboard-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#dashboard"
+                          type="button"
+                          role="tab"
+                          aria-controls="dashboard"
+                          aria-selected="true"
+                          tabIndex={-1}
+                        >
+                          Dashboard
+                        </button>
+                        <button
+                          className="nav-link"
                           id="account-info-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#account-info"
                           type="button"
                           role="tab"
                           aria-controls="account-info"
-                          aria-selected="true"
+                          aria-selected="false"
                           tabIndex={-1}
                         >
                           Account Details
@@ -61,6 +87,28 @@ export const Profile = (props) => {
                   </div>
                   <div className="col-lg-9 col-md-8">
                     <div className="tab-content" id="nav-tabContent">
+                      <div
+                        className="tab-pane fade active show"
+                        id="dashboard"
+                        role="tabpanel"
+                        aria-labelledby="dashboard-tab"
+                      >
+                        <div className="myaccount-content">
+                          <h3>Dashboard</h3>
+                          <div className="welcome">
+                            <p>
+                              Hello, <strong>{userProfile.email}</strong>
+                            </p>
+                          </div>
+                          <p>
+                            From your account dashboard. you can easily check
+                            & view your recent orders, manage your shipping
+                            and billing addresses and edit your password and
+                            account details.
+                          </p>
+                        </div>
+                      </div>
+
                       <div
                         className="tab-pane fade"
                         id="orders"
@@ -85,10 +133,7 @@ export const Profile = (props) => {
                                   <td>Aug 22, 2022</td>
                                   <td>$3000</td>
                                   <td>
-                                    <a
-                                      href="/"
-                                      className="check-btn sqr-btn "
-                                    >
+                                    <a href="/" className="check-btn sqr-btn ">
                                       View
                                     </a>
                                   </td>
@@ -124,8 +169,9 @@ export const Profile = (props) => {
                           </div>
                         </div>
                       </div>
+
                       <div
-                        className="tab-pane fade active show"
+                        className="tab-pane fade"
                         id="account-info"
                         role="tabpanel"
                         aria-labelledby="account-info-tab"
@@ -140,7 +186,11 @@ export const Profile = (props) => {
                                     <label htmlFor="email" className="required">
                                       Email
                                     </label>
-                                    <input type="email" id="email" className="cus"/>
+                                    <input
+                                      type="email"
+                                      id="email"
+                                      className="cus"
+                                    />
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -148,7 +198,11 @@ export const Profile = (props) => {
                                     <label htmlFor="name" className="required">
                                       Name
                                     </label>
-                                    <input type="text" id="name" className="cus"/>
+                                    <input
+                                      type="text"
+                                      id="name"
+                                      className="cus"
+                                    />
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -159,7 +213,11 @@ export const Profile = (props) => {
                                     >
                                       Phone number
                                     </label>
-                                    <input type="text" id="phoneNumber" className="cus"/>
+                                    <input
+                                      type="text"
+                                      id="phoneNumber"
+                                      className="cus"
+                                    />
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -170,16 +228,34 @@ export const Profile = (props) => {
                                     >
                                       Password
                                     </label>
-                                    <input type="text" id="password" className="cus"/>
+                                    <input
+                                      type="text"
+                                      id="password"
+                                      className="cus"
+                                    />
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
                                   <div className="single-input-item form-group">
                                     <p className="myaccount-gender">Gender</p>
-                                    <div className='h-gender'>
-                                      <input type="radio" className='form-check-input cus-check-input' name='gender' id='gender1' value={true}/>
-                                      <label htmlFor="gender1" className='me-4'>Male</label>
-                                      <input type="radio" className='form-check-input cus-check-input' name='gender' id='gender2' value={false}/>
+                                    <div className="h-gender">
+                                      <input
+                                        type="radio"
+                                        className="form-check-input cus-check-input"
+                                        name="gender"
+                                        id="gender1"
+                                        value={true}
+                                      />
+                                      <label htmlFor="gender1" className="me-4">
+                                        Male
+                                      </label>
+                                      <input
+                                        type="radio"
+                                        className="form-check-input cus-check-input"
+                                        name="gender"
+                                        id="gender2"
+                                        value={false}
+                                      />
                                       <label htmlFor="gender2">Female</label>
                                     </div>
                                   </div>
@@ -206,6 +282,8 @@ export const Profile = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  userProfile: state.userReducer.userProfile
+});
 
 export default connect(mapStateToProps)(Profile);
