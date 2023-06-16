@@ -47,11 +47,16 @@ export const Profile = (props) => {
   }
 
   const getProfile = async () => {
-    const res = await http.post(`/api/Users/getProfile`);
-    saveStorageJSON(USER_PROFILE,res.data.content);
-    setProfile(res.data.content);
-    let orderHistory = res.data.content.ordersHistory;
-    setOrdersHistory(orderHistory);
+    try{
+      const res = await http.post(`/api/Users/getProfile`);
+      saveStorageJSON(USER_PROFILE,res.data.content);
+      setProfile(res.data.content);
+      let orderHistory = res.data.content.ordersHistory;
+      setOrdersHistory(orderHistory);
+    }
+    catch(err){
+      return err;
+    }
   };
 
   useEffect(()=>{
