@@ -15,7 +15,6 @@ import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import Cart from './Pages/Cart/Cart';
 import Profile from './Pages/Profile/Profile';
-import Wishlist from './Pages/Wishlist/Wishlist';
 
 export const history = createBrowserHistory();
 
@@ -36,7 +35,6 @@ root.render(
             <Route path='register' element={<Register/>}></Route>
             <Route path='cart' element={<Cart/>}></Route>
             <Route path='profile' element={<Profile/>}></Route>
-            <Route path='wishlist' element={<Wishlist/>}></Route>
             <Route path='*' element={<Navigate to="/"/>}></Route>
         </Route>
       </Routes>

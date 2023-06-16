@@ -3,6 +3,8 @@ import {history} from '../index';
 
 export const DOMAIN = 'https://shop.cyberlearn.vn';
 export const USER_LOGIN = 'userLogin';
+export const USER_PROFILE = 'userProfile';
+export const PRODUCT_CART = 'cart';
 export const TOKEN = 'accessToken';
 
 export const http = axios.create({
@@ -40,7 +42,6 @@ http.interceptors.request.use((config)=>{
 http.interceptors.response.use((res)=>{
     return res;
 },(err) => {
-    console.log(err)
     if(err.response?.status === 401) {
         alert('Đăng nhập để vào trang này!');
         history.push('/login');

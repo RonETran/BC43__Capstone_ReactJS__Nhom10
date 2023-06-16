@@ -1,19 +1,61 @@
-import React, { useEffect } from "react";
-import { connect, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import * as yup from 'yup';
 import { NavLink } from "react-router-dom";
-import { getProfileActionApi } from "../../Redux/reducers/userReducer";
+import { useFormik } from "formik";
+import { USER_PROFILE, http, saveStorageJSON } from "../../Util/config";
+import ProductOrder from "../../Components/ProductOrder/ProductOrder";
+import {useForm} from 'react-hook-form';
+
 
 export const Profile = (props) => {
-  const {userProfile} = props;
-  const dispatch = useDispatch();
-  
-  const getProfileApi = () => {
-    const action = getProfileActionApi();
-    dispatch(action);
-  } 
+  const [ordersHistory, setOrdersHistory] = useState([])
+  const [profile,setProfile] = useState(props.userProfile);
+
+  const updateForm = useFormik({
+    initialValues:{
+      email: "",
+      password: "",
+      name: "",
+      gender: true,
+      phone: ""
+    },
+
+    validationSchema:yup.object().shape({
+      name:yup.string().required("Name cannot be blank!"),
+      phone:yup.number().required("Phone number cannot be blank!")
+    }),
+
+    onSubmit: async (values) => {
+      try{
+        const res = await http.post('/api/Users/updateProfile',values);
+        alert(res.data?.content);
+        window.location.reload();
+      }
+      catch(err){
+        alert(err.response.data.content);
+      }
+    },
+  });
+
+  const {setValue} = useForm();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    updateForm.handleChange(e);
+    setValue(name, value);
+  }
+
+  const getProfile = async () => {
+    const res = await http.post(`/api/Users/getProfile`);
+    saveStorageJSON(USER_PROFILE,res.data.content);
+    setProfile(res.data.content);
+    let orderHistory = res.data.content.ordersHistory;
+    setOrdersHistory(orderHistory);
+  };
 
   useEffect(()=>{
-    getProfileApi();
+    getProfile();
   },[])
 
   return (
@@ -97,7 +139,7 @@ export const Profile = (props) => {
                           <h3>Dashboard</h3>
                           <div className="welcome">
                             <p>
-                              Hello, <strong>{userProfile.email}</strong>
+                              Hello, <strong>{profile.email}</strong>
                             </p>
                           </div>
                           <p>
@@ -121,49 +163,15 @@ export const Profile = (props) => {
                             <table className="table table-bordered">
                               <thead className="thead-light">
                                 <tr>
-                                  <th>Order</th>
+                                  <th>Order code</th>
+                                  <th>Name</th>
                                   <th>Date</th>
-                                  <th>Total</th>
-                                  <th>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Aug 22, 2022</td>
-                                  <td>$3000</td>
-                                  <td>
-                                    <a href="/" className="check-btn sqr-btn ">
-                                      View
-                                    </a>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>July 22, 2022</td>
-                                  <td>$200</td>
-                                  <td>
-                                    <a
-                                      href="shop-cart.html"
-                                      className="check-btn sqr-btn "
-                                    >
-                                      View
-                                    </a>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>June 12, 2022</td>
-                                  <td>$990</td>
-                                  <td>
-                                    <a
-                                      href="shop-cart.html"
-                                      className="check-btn sqr-btn "
-                                    >
-                                      View
-                                    </a>
-                                  </td>
-                                </tr>
+                                {ordersHistory.map((item,index)=>{
+                                  return <ProductOrder key={index} itemOrder={item}/>
+                                })}
                               </tbody>
                             </table>
                           </div>
@@ -179,8 +187,13 @@ export const Profile = (props) => {
                         <div className="myaccount-content">
                           <h3>Account Details</h3>
                           <div className="account-details-form">
-                            <form action="#">
+                            <form action="#" onSubmit={updateForm.handleSubmit}>
                               <div className="row">
+                                <div className="col-lg-12">
+                                  <div className="single-input-item">
+                                    <img src={profile.avatar} alt="" />
+                                  </div>
+                                </div>
                                 <div className="col-lg-6">
                                   <div className="single-input-item">
                                     <label htmlFor="email" className="required">
@@ -188,10 +201,15 @@ export const Profile = (props) => {
                                     </label>
                                     <input
                                       type="email"
+                                      name="email"
                                       id="email"
                                       className="cus"
+                                      value={updateForm.values.email}
+                                      onInput={updateForm.handleChange}
+                                      onBlur={updateForm.handleBlur}
                                     />
-                                  </div>
+                                    {updateForm.errors.email && <p className='text-danger mt-1'>{updateForm.errors.email}</p>}
+                                    </div>
                                 </div>
                                 <div className="col-lg-6">
                                   <div className="single-input-item">
@@ -200,24 +218,34 @@ export const Profile = (props) => {
                                     </label>
                                     <input
                                       type="text"
+                                      name="name"
                                       id="name"
                                       className="cus"
+                                      value={updateForm.values.name}
+                                      onChange={handleInputChange}
+                                      onBlur={updateForm.handleBlur}
                                     />
+                                    {updateForm.errors.name && <p className='text-danger mt-1'>{updateForm.errors.name}</p>}
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
                                   <div className="single-input-item">
                                     <label
-                                      htmlFor="phoneNumber"
+                                      htmlFor="phone"
                                       className="required"
                                     >
                                       Phone number
                                     </label>
                                     <input
                                       type="text"
-                                      id="phoneNumber"
+                                      name="phone"
+                                      id="phone"
                                       className="cus"
+                                      // value={profile.phone}
+                                      onChange={handleInputChange}
+                                      onBlur={updateForm.handleBlur}
                                     />
+                                    {updateForm.errors.phone && <p className='text-danger mt-1'>{updateForm.errors.phone}</p>}
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -230,9 +258,13 @@ export const Profile = (props) => {
                                     </label>
                                     <input
                                       type="text"
+                                      name="password"
                                       id="password"
                                       className="cus"
+                                      onInput={updateForm.handleChange}
+                                      onBlur={updateForm.handleBlur}
                                     />
+                                    {updateForm.errors.password && <p className='text-danger mt-1'>{updateForm.errors.password}</p>}
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -262,7 +294,7 @@ export const Profile = (props) => {
                                 </div>
                               </div>
                               <div className="single-input-item">
-                                <button className="check-btn">
+                                <button className="check-btn" type="submit">
                                   Save Changes
                                 </button>
                               </div>

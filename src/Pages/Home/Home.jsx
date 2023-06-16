@@ -38,8 +38,8 @@ export const Home = (props) => {
                     <p className='fs-18'>There are many variations of passages of Lorem Ipsum available</p>
                 </div>
                 <div className='product-item row'>
-                    {arrProduct.map((item)=>{
-                        return <Product item={item}/>
+                    {arrProduct.map((item,index)=>{
+                        return <Product key={index} item={item}/>
                     })}
                 </div>
             </div>

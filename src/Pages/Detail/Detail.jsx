@@ -8,6 +8,7 @@ import { addToCartAction } from '../../Redux/reducers/shopReducer'
 export const Detail = (props) => {
 
   const [productDetail, setProductDetail] = useState(props.productDetail);
+  const [number, setNumber] = useState(1);
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -50,19 +51,30 @@ export const Detail = (props) => {
                 <label htmlFor="size" className='mb-1'>Size</label>
                 <br />
                 <select name="size" id="size" className='p-size'>
-                  <option value="">Choose an option</option>
-                  <option value="">36</option>
-                  <option value="">37</option>
-                  <option value="">38</option>
-                  <option value="">39</option>
-                  <option value="">40</option>
-                  <option value="">41</option>
-                  <option value="">42</option>
+                  <option value="1">36</option>
+                  <option value="2">37</option>
+                  <option value="3">38</option>
+                  <option value="4">39</option>
+                  <option value="5">40</option>
+                  <option value="6">41</option>
+                  <option value="7">42</option>
                 </select>
               </div>
               <div className='quantity'>
-                <input type="number" step="1" value={"1"} min="1" max={productDetail.quantity} name='quantity' className='p-qty me-3'/>
-                <button className='p-add' onClick={()=>{
+                <div className="pro-detail-qty ver-mid">
+                  <input type="text" value={number} step="1"/>
+                  <div className="dec-detail qty-btn-detail" onClick={()=>{
+                    if(number>1){
+                      setNumber(number - 1);
+                    }else{
+                      return number;
+                    }
+                  }}>-</div>
+                  <div className="inc-detail qty-btn-detail" onClick={()=>{
+                    setNumber(number + 1);
+                  }}>+</div>
+                </div>
+                <button className='p-add ver-mid' onClick={()=>{
                   const action = addToCartAction(productDetail);
                   dispatch(action);
                 }}>ADD TO CART</button>

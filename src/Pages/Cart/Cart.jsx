@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ProductCart from "../../Components/ProductCart/ProductCart";
+import axios from "axios";
+import { PRODUCT_CART, USER_LOGIN, clearStorage, getStorageJSON } from "../../Util/config";
 
 export const Cart = (props) => {
+
+  const navigate = useNavigate();
+  const productCart = getStorageJSON(PRODUCT_CART);
+  const userLogin = getStorageJSON(USER_LOGIN);
+
+  const mergeObj = (arr,email) => {
+    const merge = {
+      orderDetail: arr,
+      email: email
+    };
+    return merge;
+  }
+
+  const submitOrder = async () => {
+    let newProdCart = productCart.map((item)=>{
+      const {id} = item;
+      return {productId:id, quantity:0}
+    });
+    const newData = mergeObj(newProdCart,userLogin.email)
+    const res = await axios({
+      url:'https://shop.cyberlearn.vn/api/Users/order',
+      method: 'POST',
+      data: newData
+    });
+    alert(res.data.message);
+    clearStorage(PRODUCT_CART);
+    window.location.reload();
+  }
+
+  const checkLogin = () => {
+    const userLogin = getStorageJSON(USER_LOGIN);
+    if(!userLogin) {
+      alert('Đăng nhập để vào trang này!');
+      navigate('/login');
+    }
+  }
+
+  useEffect(()=>{
+    checkLogin(); 
+  },[])
 
   return (
     <div>
@@ -33,8 +75,8 @@ export const Cart = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.cart.map((item)=>{
-                return <ProductCart itemCart={item}/>
+              {props.cart.map((item,index)=>{
+                return <ProductCart key={index} itemCart={item}/>
               })}
 
               <tr className="actions">
@@ -44,7 +86,7 @@ export const Cart = (props) => {
                       <NavLink to="/home" className="continue btn-left">CONTINUE SHOPPING</NavLink>
                     </div>
                     <div className="act-right">
-                      <button className="btn-right">SUBMIT ORDER</button>
+                      <button className="btn-right" onClick={submitOrder}>SUBMIT ORDER</button>
                     </div>
                   </div>
                 </td>
@@ -58,7 +100,8 @@ export const Cart = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  cart: state.shopReducer.cart
+  cart: state.shopReducer.cart,
+  order: state.shopReducer.order
 });
 
 export default connect(mapStateToProps)(Cart);

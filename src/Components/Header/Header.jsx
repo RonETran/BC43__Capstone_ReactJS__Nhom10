@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { USER_LOGIN, clearStorage } from '../../Util/config';
+import { PRODUCT_CART, USER_LOGIN, USER_PROFILE, clearStorage } from '../../Util/config';
 
 const Header = (props) => {
     const navigate = useNavigate();
@@ -14,6 +14,8 @@ const Header = (props) => {
                 <NavLink to="/profile" className="text-dark text-hover px-2">{userLogin.email}</NavLink>
                 <span style={{cursor:'pointer'}} className='text-dark bd-text text-hover px-2' onClick={()=>{
                     clearStorage(USER_LOGIN);
+                    clearStorage(USER_PROFILE);
+                    clearStorage(PRODUCT_CART);
                     navigate('/login');
                     window.location.reload();
                 }}>Logout</span>
@@ -25,6 +27,7 @@ const Header = (props) => {
             <NavLink to="/register" className="text-dark bd-text text-hover px-2">Register</NavLink>
         </>
     }
+
   return (
     <div className='header'>
         <div className='header-top bg-header-top'>
@@ -42,7 +45,6 @@ const Header = (props) => {
                 </div>
                 <div className='header-mid-right d-flex'>
                     <NavLink to="/search"><i className="fa fa-search fs-icon px-2"></i></NavLink>
-                    <NavLink to="/wishlist"><i className="fa fa-heart fs-icon px-2"></i></NavLink>
                     <div className='cart position-relative'>
                         <NavLink to="/cart"><i className="fa fa-shopping-cart fs-icon px-2"></i></NavLink>
                         <span className='position-absolute count'>{number}</span>

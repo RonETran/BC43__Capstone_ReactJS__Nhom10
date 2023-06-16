@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { USER_LOGIN, getStorageJSON, http, saveStorageJSON } from '../../Util/config';
+import { USER_LOGIN, USER_PROFILE, getStorageJSON, http, saveStorageJSON } from '../../Util/config';
 import {history} from '../../index';
 
 const initStateUserLogin = () => {
@@ -47,15 +47,21 @@ export const loginActionApi = (userLogin) => {
       history.push('/profile');
     }
     catch(err){
-      alert(err.reponse?.data.message);
+      alert(err.response?.data.message);
     }
   }
 };
 
 export const getProfileActionApi = () => {
   return async (dispatch) => {
+    try{
       const res = await http.post(`/api/Users/getProfile`)
       const action = getProfileAction(res.data.content);
-      dispatch(action)
+      dispatch(action);
+      saveStorageJSON(USER_PROFILE,res.data.content);
+    }
+    catch(err){
+      return err;
+    }
   };
 };
