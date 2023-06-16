@@ -8,7 +8,7 @@ import { addToCartAction } from '../../Redux/reducers/shopReducer'
 export const Detail = (props) => {
 
   const [number, setNumber] = useState(1);
-  const [productDetail, setProductDetail] = useState({...props.productDetail,number});
+  const [productDetail, setProductDetail] = useState(props.productDetail);
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -103,8 +103,7 @@ export const Detail = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  productDetail: state.shopReducer.productDetail,
-  quantityDetail: state.shopReducer.quantityDetail
+  productDetail: state.shopReducer.productDetail
 })
 
 export default connect(mapStateToProps)(Detail)
