@@ -241,7 +241,7 @@ export const Profile = (props) => {
                                       name="phone"
                                       id="phone"
                                       className="cus"
-                                      // value={profile.phone}
+                                      value={updateForm.values.phone}
                                       onChange={handleInputChange}
                                       onBlur={updateForm.handleBlur}
                                     />
@@ -261,6 +261,7 @@ export const Profile = (props) => {
                                       name="password"
                                       id="password"
                                       className="cus"
+                                      value={updateForm.values.password}
                                       onInput={updateForm.handleChange}
                                       onBlur={updateForm.handleBlur}
                                     />

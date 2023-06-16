@@ -7,8 +7,8 @@ import { addToCartAction } from '../../Redux/reducers/shopReducer'
 
 export const Detail = (props) => {
 
-  const [productDetail, setProductDetail] = useState(props.productDetail);
   const [number, setNumber] = useState(1);
+  const [productDetail, setProductDetail] = useState({...props.productDetail,number});
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -72,6 +72,7 @@ export const Detail = (props) => {
                   }}>-</div>
                   <div className="inc-detail qty-btn-detail" onClick={()=>{
                     setNumber(number + 1);
+                    console.log(number)
                   }}>+</div>
                 </div>
                 <button className='p-add ver-mid' onClick={()=>{
@@ -102,7 +103,8 @@ export const Detail = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  productDetail: state.shopReducer.productDetail
+  productDetail: state.shopReducer.productDetail,
+  quantityDetail: state.shopReducer.quantityDetail
 })
 
 export default connect(mapStateToProps)(Detail)
