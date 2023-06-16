@@ -37,10 +37,10 @@ export const Detail = (props) => {
       <div className='product-detail m-10'>
         <div className='container'>
           <div className='row justify-content-center'>
-            <div className='col-5 bg-product w-400 h-400 position-relative'>
+            <div className='col-5 bg-product mb-5 w-400 h-400 position-relative'>
               <img src={productDetail.image} alt="" className='w-detail position-img'/>
             </div>
-            <div className='col-6 ms-5'>
+            <div className='col-lg-6 col-sm-8 ms-5'>
               <h3 className='fs-24 mb-3'>{productDetail.name}</h3>
               <p className='text-orange fs-24'>{productDetail.price}$</p>
               <hr />

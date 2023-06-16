@@ -64,7 +64,7 @@ export const Search = (props) => {
             <button onClick={filterAscending}>Ascending</button>
           </div>
           <div className='product-list mt-5'>
-            <div className='container'>
+            <div >
               <div className='product-item row'>
                 {arrProductSearch.map((item)=>{
                   return <Product item={item}/>

@@ -62,7 +62,7 @@ const Register = () => {
               <div className='register-form'>
                 <form action="#" onSubmit={registerForm.handleSubmit}>
                   <div className='row'>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <label htmlFor="email">
                           Email
@@ -72,7 +72,7 @@ const Register = () => {
                         {registerForm.errors.email && <p className='text-danger mt-1'>{registerForm.errors.email}</p>}
                       </div>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <label htmlFor="name">
                           Name
@@ -82,7 +82,7 @@ const Register = () => {
                         {registerForm.errors.name && <p className='text-danger mt-1'>{registerForm.errors.name}</p>}
                       </div>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <label htmlFor="password">
                           Password
@@ -92,7 +92,7 @@ const Register = () => {
                         {registerForm.errors.password && <p className='text-danger mt-1'>{registerForm.errors.password}</p>}
                       </div>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <label htmlFor="phone">
                           Phone number
@@ -102,7 +102,7 @@ const Register = () => {
                         {registerForm.errors.phone && <p className='text-danger mt-1'>{registerForm.errors.phone}</p>}
                       </div>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <label htmlFor="confirm">
                           Password confirm
@@ -112,7 +112,7 @@ const Register = () => {
                         {registerForm.errors.passwordConfirm && <p className='text-danger mt-1'>{registerForm.errors.passwordConfirm}</p>}
                       </div>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-md-6 col-sm-12'>
                       <div className='form-group'>
                         <p>Gender</p>
                         <div className='h-gender'>

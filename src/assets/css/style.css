@@ -89,6 +89,76 @@ a{
 .menu:hover{
     color: #fffc !important;
 }
+.btn-menu{
+    background-color: transparent;
+    border: none;
+    display: none;
+    margin: 0;
+    padding: 0;
+    font-size: 27px;
+    margin-left: 8px;
+}
+.off-canvas-wrapper.offcanvas {
+    background-color: #1f1f1f;
+    width: 440px;
+}
+.off-canvas-wrapper .offcanvas-header {
+    padding: 0;
+}
+.off-canvas-wrapper .btn-menu-close {
+    display: block;
+    width: 100%;
+    height: 60px;
+    background-color: #eb3e32;
+    opacity: 1;
+    border-radius: 0;
+    color: #fff;
+    background-image: none;
+    padding: 0 40px;
+    line-height: 60px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: left;
+    border: none;
+    position: relative;
+    transition: all 0.3s ease-out;
+}
+.off-canvas-wrapper .btn-menu-close i {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+.off-canvas-wrapper .offcanvas-body {
+    padding: 0;
+}
+.info-items{
+    display: block;
+    line-height: 1;
+    position: relative;
+    border-bottom: 1px solid #373737;
+    padding: 20px 10px;
+}
+.info-items a{
+    color: #fff !important;
+    font-size: 14px;
+    line-height: 1;
+    position: relative;
+    padding-left: 28px;
+}
+.mobile-menu-items ul li a {
+    display: block;
+    width: 100%;
+    background: none;
+    text-align: left;
+    padding: 10px 20px;
+    border: 0;
+    border-bottom: 1px solid #373737;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+}
 
 /* footer */
 .bg-footer{
@@ -740,4 +810,144 @@ a{
     color: #fff;
     background-color: #eb3e32;
     border: 1px solid #eb3e32;
+}
+
+@media screen and (max-width:992px){
+    .bd{
+        border: none;
+    }
+}
+@media screen and (max-width: 991px){
+    .btn-menu {
+        display: inline-flex;
+    }
+    .off-canvas-wrapper.offcanvas {
+        width: 310px;
+    }
+    .account{
+        display: none;
+    }
+    .header-top .res{
+        justify-content: center !important;
+    }
+    .header-top .res p{
+        text-align: center;
+    }
+    .header-bot{
+        display: none;
+    }
+    .bd-text{
+        border-left: 1px solid #fff;
+    }
+    .bg-carousel{
+        height: 490px;
+    }
+}
+@media screen and (max-width:769px){
+    .bg-carousel{
+        height: 450px;
+    }
+    .p-carousel{
+        padding: 90px 0;
+    }
+    .bg-page{
+        height: 350px;
+    }
+    .p-140{
+        padding: 115px 0;
+    }
+    .fs-18{
+        font-size: 16px;
+    }
+    .fs-24{
+        font-size: 20px;
+    }
+    .fs-48{
+        font-size: 42px;
+    }
+    .fs-58{
+        font-size: 48px;
+    }
+    .fs-90{
+        font-size: 64px;
+    }
+    .mb-5{
+        margin-bottom: 20px !important;
+    }
+    .button{
+        padding: 16px 60px;
+    }
+    .h-400{
+        height: 350px;
+    }
+    .w-400{
+        width: 350px;
+    }
+    .ms-5{
+        margin-left: 0 !important;
+    }
+    .pro-detail-qty{
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width:576px){
+    .cus-container{
+        max-width: 290px !important;
+        margin: auto;
+    }
+    .search-input{
+        width: 350px;
+    }
+    .w-form-search{
+        width: 350px;
+        margin: auto;
+    }
+    .product-item{
+        justify-content: center;
+    }
+    .bg-carousel{
+        height: 320px;
+    }
+    .p-carousel{
+        padding: 60px 0;
+    }
+    .fs-16{
+        font-size: 14px;
+    }
+    .fs-24{
+        font-size: 16px;
+    }
+    .fs-58{
+        font-size: 36px;
+    }
+    .fs-48{
+        font-size: 40px;
+    }
+    .fs-90{
+        font-size: 42px;
+    }
+    .mb-5{
+        margin-bottom: 10px !important;
+    }
+    .button{
+        padding: 10px 30px;
+    }
+    .related-items{
+        justify-content: center !important;
+    }
+    .h-400{
+        height: 290px;
+    }
+    .w-400{
+        width: 290px;
+    }
+}
+@media screen and (max-width:426px){
+    .search-input{
+        width: 270px;
+    }
+    .w-form-search{
+        width: 270px;
+        margin: auto;
+    }
 }

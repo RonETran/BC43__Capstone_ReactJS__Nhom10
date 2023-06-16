@@ -6,7 +6,7 @@ export default function Footer() {
     <div className="footer bg-footer p-5">
       <div className="container">
         <div className="row">
-          <div className="col-4 px-5">
+          <div className="col-md-6 col-lg-4 px-2 px-sm-3 px-md-4 px-lg-5 mb-4">
             <h3 className="text-white">GET HELP</h3>
             <ul className="text-grey">
               <li>Contact us</li>
@@ -15,7 +15,7 @@ export default function Footer() {
               <li>Nike+</li>
             </ul>
           </div>
-          <div className="col-4 px-5 bd">
+          <div className="col-md-6 col-lg-4 px-2 px-sm-3 px-md-4 px-lg-5 bd mb-4">
             <h3 className="text-white">ORDERS</h3>
             <ul className="text-grey">
               <li>Payment options</li>
@@ -23,7 +23,7 @@ export default function Footer() {
               <li>Returns</li>
             </ul>
           </div>
-          <div className="col-4 px-5">
+          <div className="col-md-6 col-lg-4 px-2 px-sm-3 px-md-4 px-lg-5 mb-4">
             <h3 className="text-white">REGISTER</h3>
             <p className="text-grey">
               Create one account to manage everything you do with Nike, from

@@ -8,7 +8,7 @@ export const Product = (props) => {
     const dispatch = useDispatch();
 
     return (
-        <div className='item col-3 mb-5' key={item.id}>
+        <div className='item col-10 col-sm-6 col-lg-4 col-xl-3 mb-5' key={item.id}>
             <div className='img mb-2 h-270 bg-product position-relative'>
                 <img src={item.image} alt="" className='position-img w-img-product'/>
                 <ul className='d-flex m-0 position-list'>
