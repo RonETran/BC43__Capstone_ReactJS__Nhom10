@@ -77,4 +77,4 @@ https://docs.google.com/spreadsheets/d/179GQ-2E_57dcBK2ScCuDiwLCMBTG6r1ubNjYYHIU
 https://youtu.be/OurtVH07JQM
 
 <!-- Link deploy -->
-capstone-reactjs.surge.sh
+http://testdeploy.capstonereactjs.thinhha.bc43.surge.sh/
