@@ -147,6 +147,11 @@ a{
     position: relative;
     padding-left: 28px;
 }
+.info-items span{
+    color: #fff !important;
+    font-size: 14px;
+    line-height: 1;
+}
 .mobile-menu-items ul li a {
     display: block;
     width: 100%;
