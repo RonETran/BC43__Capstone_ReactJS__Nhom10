@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import ProductCart from "../../Components/ProductCart/ProductCart";
 import axios from "axios";
-import { PRODUCT_CART, USER_LOGIN, clearStorage, getStorageJSON } from "../../Util/config";
+import { USER_LOGIN, getStorageJSON } from "../../Util/config";
 
 export const Cart = (props) => {
 
   const navigate = useNavigate();
-  const productCart = getStorageJSON(PRODUCT_CART);
   const userLogin = getStorageJSON(USER_LOGIN);
 
   const mergeObj = (arr,email) => {
@@ -20,7 +19,7 @@ export const Cart = (props) => {
   }
 
   const submitOrder = async () => {
-    let newProdCart = productCart.map((item)=>{
+    let newProdCart = props.cart.map((item)=>{
       const {id} = item;
       return {productId:id, quantity:0}
     });
@@ -31,7 +30,6 @@ export const Cart = (props) => {
       data: newData
     });
     alert(res.data.message);
-    clearStorage(PRODUCT_CART);
     window.location.reload();
   }
 
@@ -75,9 +73,7 @@ export const Cart = (props) => {
               </tr>
             </thead>
             <tbody>
-              {productCart ? productCart.map((item,index)=>{
-                return <ProductCart key={index} itemCart={item}/>
-              }) : props.cart.map((item,index)=>{
+              {props.cart.map((item,index)=>{
                 return <ProductCart key={index} itemCart={item}/>
               })}
 

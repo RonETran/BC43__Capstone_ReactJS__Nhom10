@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { connect, useDispatch } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
 import Product from '../../Components/Product/Product'
-import { addToCartAction } from '../../Redux/reducers/shopReducer'
+import { addToCartFromDetailAction, getDetailAction, quantityDetailAction } from '../../Redux/reducers/shopReducer'
 
 export const Detail = (props) => {
 
-  const [number, setNumber] = useState(1);
-  const [productDetail, setProductDetail] = useState(props.productDetail);
-
   const params = useParams();
   const dispatch = useDispatch();
+  const payload1 = {
+    id:props.productDetail.id,
+    valid1: false
+  }
+  const payload2 = {
+    id:props.productDetail.id,
+    valid2: true
+  }
 
   const getProductDetail = async () => {
     const result = await axios({
       url: `https://shop.cyberlearn.vn/api/Product/getbyid?id=${params.id}`,
       method: "GET",
     });
-    setProductDetail(result.data.content);
+    const action = getDetailAction(result.data.content);
+    dispatch(action)
   };
 
   useEffect(() => {
@@ -38,14 +44,14 @@ export const Detail = (props) => {
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-5 bg-product mb-5 w-400 h-400 position-relative'>
-              <img src={productDetail.image} alt="" className='w-detail position-img'/>
+              <img src={props.productDetail.image} alt="" className='w-detail position-img'/>
             </div>
             <div className='col-lg-6 col-sm-8 ms-5'>
-              <h3 className='fs-24 mb-3'>{productDetail.name}</h3>
-              <p className='text-orange fs-24'>{productDetail.price}$</p>
+              <h3 className='fs-24 mb-3'>{props.productDetail.name}</h3>
+              <p className='text-orange fs-24'>{props.productDetail.price}$</p>
               <hr />
               <div className='desc mb-4'>
-                <p>{productDetail.description}</p>
+                <p>{props.productDetail.description}</p>
               </div>
               <div className='mb-4'>
                 <label htmlFor="size" className='mb-1'>Size</label>
@@ -62,21 +68,18 @@ export const Detail = (props) => {
               </div>
               <div className='quantity'>
                 <div className="pro-detail-qty ver-mid">
-                  <input type="text" value={number} step="1"/>
                   <div className="dec-detail qty-btn-detail" onClick={()=>{
-                    if(number>1){
-                      setNumber(number - 1);
-                    }else{
-                      return number;
-                    }
+                    const action = quantityDetailAction(payload1);
+                    dispatch(action);
                   }}>-</div>
                   <div className="inc-detail qty-btn-detail" onClick={()=>{
-                    setNumber(number + 1);
-                    console.log(number)
+                    const action = quantityDetailAction(payload2);
+                    dispatch(action);
                   }}>+</div>
+                  <input type="text" value={props.productDetail.num}/>
                 </div>
                 <button className='p-add ver-mid' onClick={()=>{
-                  const action = addToCartAction(productDetail);
+                  const action = addToCartFromDetailAction(props.productDetail);
                   dispatch(action);
                 }}>ADD TO CART</button>
               </div>
@@ -92,7 +95,7 @@ export const Detail = (props) => {
             <p className='fs-18'>There are many variations of passages of Lorem Ipsum available</p>
           </div>
           <div className='related-items row '>
-            {productDetail.relatedProducts?.map((item)=>{
+            {props.productDetail.relatedProducts?.map((item)=>{
               return <Product item={item}/>
             })}
           </div>
