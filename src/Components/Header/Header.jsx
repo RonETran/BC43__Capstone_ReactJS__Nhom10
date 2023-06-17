@@ -61,7 +61,7 @@ const Header = (props) => {
           </div>
         </div>
         <div className="header-mid pt-4 pb-3">
-          <div className="container d-flex px-0 justify-content-between align-items-center">
+          <div className="container cus-container d-flex px-0 justify-content-between align-items-center">
             <div className="header-mid-left">
               <h2 className="logo">Shoes</h2>
             </div>
