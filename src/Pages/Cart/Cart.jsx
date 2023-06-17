@@ -75,7 +75,9 @@ export const Cart = (props) => {
               </tr>
             </thead>
             <tbody>
-              {props.cart.map((item,index)=>{
+              {productCart ? productCart.map((item,index)=>{
+                return <ProductCart key={index} itemCart={item}/>
+              }) : props.cart.map((item,index)=>{
                 return <ProductCart key={index} itemCart={item}/>
               })}
 

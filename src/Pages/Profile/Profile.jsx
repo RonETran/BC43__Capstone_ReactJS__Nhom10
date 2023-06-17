@@ -1,56 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import * as yup from 'yup';
+import { connect, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useFormik } from "formik";
-import { USER_PROFILE, http, saveStorageJSON } from "../../Util/config";
+import { USER_PROFILE, getStorageJSON, http, saveStorageJSON } from "../../Util/config";
 import ProductOrder from "../../Components/ProductOrder/ProductOrder";
-import {useForm} from 'react-hook-form';
+import { changeProfileAction, editProfileAction, updateProfileActionApi } from "../../Redux/reducers/userReducer";
 
 
 export const Profile = (props) => {
+  const dispatch = useDispatch();
   const [ordersHistory, setOrdersHistory] = useState([])
-  const [profile,setProfile] = useState(props.userProfile);
-
-  const updateForm = useFormik({
-    initialValues:{
-      email: "",
-      password: "",
-      name: "",
-      gender: true,
-      phone: ""
-    },
-
-    validationSchema:yup.object().shape({
-      name:yup.string().required("Name cannot be blank!"),
-      phone:yup.number().required("Phone number cannot be blank!")
-    }),
-
-    onSubmit: async (values) => {
-      try{
-        const res = await http.post('/api/Users/updateProfile',values);
-        alert(res.data?.content);
-        window.location.reload();
-      }
-      catch(err){
-        alert(err.response.data.content);
-      }
-    },
-  });
-
-  const {setValue} = useForm();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    updateForm.handleChange(e);
-    setValue(name, value);
+    let errorText = "";
+    
+    if (name === "phone") {
+      const regex = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/
+      if (!regex.test(value)) {
+        errorText = "Invalid phone number format!";
+      }
+    }
+    if (name === "name") {
+      const regex = /^[a-zA-Z ]+$/
+      if (!regex.test(value)) {
+        errorText = "Name is not valid";
+      }
+    }
+
+    let values = {...props.userProfile, [name]:value}
+    let errors = { ...props.errors, [name]: errorText };
+    const action = changeProfileAction({values,errors});
+    dispatch(action);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const action = updateProfileActionApi(props.userProfileUpdate);
+    dispatch(action);
   }
 
   const getProfile = async () => {
     try{
       const res = await http.post(`/api/Users/getProfile`);
       saveStorageJSON(USER_PROFILE,res.data.content);
-      setProfile(res.data.content);
+      const getProfileStorage = getStorageJSON(USER_PROFILE);
+      const action = editProfileAction(getProfileStorage);
+      dispatch(action)
       let orderHistory = res.data.content.ordersHistory;
       setOrdersHistory(orderHistory);
     }
@@ -144,7 +139,7 @@ export const Profile = (props) => {
                           <h3>Dashboard</h3>
                           <div className="welcome">
                             <p>
-                              Hello, <strong>{profile.email}</strong>
+                              Hello, <strong>{props.userProfile.email}</strong>
                             </p>
                           </div>
                           <p>
@@ -192,11 +187,11 @@ export const Profile = (props) => {
                         <div className="myaccount-content">
                           <h3>Account Details</h3>
                           <div className="account-details-form">
-                            <form action="#" onSubmit={updateForm.handleSubmit}>
+                            <form action="#" onSubmit={handleSubmit}>
                               <div className="row">
                                 <div className="col-lg-12">
                                   <div className="single-input-item">
-                                    <img src={profile.avatar} alt="" />
+                                    <img src={props.userProfile.avatar} alt="" />
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -209,11 +204,10 @@ export const Profile = (props) => {
                                       name="email"
                                       id="email"
                                       className="cus"
-                                      value={updateForm.values.email}
-                                      onInput={updateForm.handleChange}
-                                      onBlur={updateForm.handleBlur}
+                                      defaultValue={props.userProfile.email}
+                                      onChange={handleInputChange}
+                                      readOnly
                                     />
-                                    {updateForm.errors.email && <p className='text-danger mt-1'>{updateForm.errors.email}</p>}
                                     </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -226,11 +220,10 @@ export const Profile = (props) => {
                                       name="name"
                                       id="name"
                                       className="cus"
-                                      value={updateForm.values.name}
+                                      value={props.userProfile.name}
                                       onChange={handleInputChange}
-                                      onBlur={updateForm.handleBlur}
                                     />
-                                    {updateForm.errors.name && <p className='text-danger mt-1'>{updateForm.errors.name}</p>}
+                                    <p className="text-danger mt-1">{props.errors.name}</p>
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -246,11 +239,10 @@ export const Profile = (props) => {
                                       name="phone"
                                       id="phone"
                                       className="cus"
-                                      value={updateForm.values.phone}
+                                      value={props.userProfile.phone}
                                       onChange={handleInputChange}
-                                      onBlur={updateForm.handleBlur}
                                     />
-                                    {updateForm.errors.phone && <p className='text-danger mt-1'>{updateForm.errors.phone}</p>}
+                                    <p className="text-danger mt-1">{props.errors.phone}</p>
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -266,11 +258,9 @@ export const Profile = (props) => {
                                       name="password"
                                       id="password"
                                       className="cus"
-                                      value={updateForm.values.password}
-                                      onInput={updateForm.handleChange}
-                                      onBlur={updateForm.handleBlur}
+                                      value={props.userProfile.password}
+                                      onChange={handleInputChange}
                                     />
-                                    {updateForm.errors.password && <p className='text-danger mt-1'>{updateForm.errors.password}</p>}
                                   </div>
                                 </div>
                                 <div className="col-lg-6">
@@ -321,7 +311,9 @@ export const Profile = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  userProfile: state.userReducer.userProfile
+  userProfile: state.userReducer.userProfile,
+  userProfileUpdate: state.userReducer.userProfileUpdate,
+  errors: state.userReducer.errors
 });
 
 export default connect(mapStateToProps)(Profile);
